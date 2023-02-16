@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>List users</title>
+</head>
+<body>
+
+<div>
+
+  <table bgcolor="#f0e68c" border="4">
+
+    <caption>
+      <h3>List peoples</h3>
+    </caption>
+    <tr>
+      <th> Number </th>
+      <th> Name </th>
+      <th> Surname </th>
+      <th> email </th>
+      <th> update </th>
+      <th> delete </th>
+
+
+    <tr th:each="user: ${users}">
+
+      <td style="text-align: center" th:text="${user.getId()}"></td>
+
+      <td style="text-align: center" th:text="${user.getFirstName()}"></td>
+
+      <td style="text-align: center"  th:text="${user.getLastName()}"></td>
+
+      <td style="text-align: center" th:text="${user.getEmail()}"></td>
+
+      <td>
+      <a style="text-align: center" th:href="@{/users/{id}/edit(id=${user.getId()})}" th:text="update">us</a>
+      </td>
+
+
+      <td>
+        <a style="text-align: center" th:href="@{/users/del{idDelete}(idDelete=${user.getId()})}" th:text="delete">us</a>
+      </td>
+
+
+
+    </tr>
+  </table>
+
+</div>
+
+<br/>
+<hr/>
+
+<a href="/users/new">Create new user</a>
+
+</body>
+</html>
+
+
+
+
