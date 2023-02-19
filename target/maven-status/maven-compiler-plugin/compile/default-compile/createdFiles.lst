@@ -1,0 +1,9 @@
+web\service\UserService.class
+web\controller\HelloController.class
+web\config\AppInit.class
+web\config\WebConfig.class
+web\service\UserServiceImpl.class
+web\repositories\UserRepository.class
+web\config\AppData.class
+web\model\User.class
+web\controller\UsersController.class

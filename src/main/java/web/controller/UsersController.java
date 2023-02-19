@@ -1,7 +1,7 @@
 package web.controller;
 
-import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -11,33 +11,42 @@ import org.springframework.web.bind.annotation.*;
 import web.model.User;
 import web.service.UserService;
 
+
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping("/users")
 public class UsersController {
 
     private UserService userService;
-    public  UsersController(UserService userService) {
-        this.userService= userService;
+
+    public UsersController() {
     }
+
+    @Autowired
+    public UsersController(UserService userService) {
+        this.userService = userService;
+    }
+
 
     // метод возвращающий всех людей передает всех юзеров на представление
     @GetMapping
     public String userList(Model model) {
-        model.addAttribute("users", userService.getUsersList()); //getAllUsers());
+        model.addAttribute("users", userService.findAll());
         return "users";
     }
 
 
     // Получение одного юзера по id о передача его на представление
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userService.getUserById(id));
+    public String show(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("user", userService.findOne(id));
         return "show";
     }
 
     @GetMapping("/del{idDelete}")
-    public String showDelete(@PathVariable("idDelete") int id, Model model) {
-        model.addAttribute("user", userService.getUserById(id));
+    public String showDelete(@PathVariable("idDelete") Long id, Model model) {
+        model.addAttribute("user", userService.findOne(id)); //getUserById(id));
         return "showDelete";
     }
 
@@ -52,29 +61,29 @@ public class UsersController {
         if (bindingResult.hasErrors())
             return "newUser";
 
-        userService.addUser(user);
+        userService.save(user); // addUser(user);
         return "redirect:/users";
 
     }
-// методы для обновления данных юзера  /users/3/edit // добавить методы в AppInit
+// методы для обновления данных юзера  /users/3/edit //
     @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("user", userService.getUserById(id));
+    public String edit(Model model, @PathVariable("id") Long id) {
+        model.addAttribute("user", userService.findOne(id));
         return "edit";
     }
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("user") @Valid User user,          // если ошибки, возврат на страницу редактир
-                         BindingResult bindingResult,@PathVariable("id") int id) {
+                         BindingResult bindingResult,@PathVariable("id") Long id) {
         if (bindingResult.hasErrors())
             return "edit";
-        userService.updateUser(id, user); //update(id, user);
+        userService.update(id, user);
         return "redirect:/users";
     }
 
 // метод для удаления юзера
     @DeleteMapping("/{id}")
-    public String deleteUser(@PathVariable("id") int id) {
-        userService.deleteUser(id); // delete(id);
+    public String deleteUser(@PathVariable("id") Long id) {
+        userService.delete(id);
         return "redirect:/users";
     }
 

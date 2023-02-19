@@ -1,68 +1,60 @@
 package web.service;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import web.dao.UserDao;
+import org.springframework.transaction.annotation.Transactional;
 import web.model.User;
+import web.repositories.UserRepository;
 
-import javax.transaction.Transactional;
 import java.util.List;
+
+
 @Service
-public class UserServiceImpl implements UserService {
+@Transactional //(readOnly=true)
+public class UserServiceImpl  implements UserService {
 
+    public UserRepository userRepository;
 
-    private final UserDao userDao;
-
-    public UserServiceImpl(UserDao userDao) {
-        this.userDao = userDao;
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository) {
+        super();
+        this.userRepository = userRepository;
     }
-    @Override
+
+    public UserServiceImpl() {
+    }
+
+    @Transactional(readOnly = true)
+    public List<User> findAll() {
+        return (List<User>) userRepository.findAll();
+    }
+
     @Transactional
-    public List<User> getUsersList() {
-        return userDao.getUsersList();
+    @Override
+    public User findOne(Long id) {
+        User user = userRepository.findById(id).get();
+        return user;
     }
 
-    @Override
     @Transactional
-    public void addUser(User user) {
-        userDao.addUser(user);
+    @Override
+    public void save(User user) {
+        userRepository.save(user);
     }
 
-    @Override
     @Transactional
-    public User getUserById(int id) {
-        return userDao.getUserById(id);
+    @Override
+    public void update(Long id, User updateUser) {
+        updateUser.setId(id);
+        userRepository.save(updateUser);
     }
 
-    @Override
     @Transactional
-    public void updateUser(int id, User updateUser) {
-        userDao.updateUser(id, updateUser); ///  updateUser(id, updateUser);
+    @Override
+    public void delete(Long id) {
+        userRepository.deleteById(id);
     }
 
-    @Override
-    @Transactional
-    public void deleteUser(int id) {
-        userDao.deleteUser(id); // deleteUser(id);
-    }
 }
-
-    /////////////////////////////////////////////////////////////////////////////
-
-//    @Override
-//    public User showOneUser(int id) {
-//        return userDao.show(id);
-//    }
-//    @Override
-//    public void save(User user) {
-//        userDao.save(user);
-//    }
-//    @Override
-//    public void update(int id, User updatedUser) { // User updatedUser-- человек пришедший из формы
-//        userDao.update(id, updatedUser);
-//    }
-//    @Override
-//    public void delete(int id) {
-//        userDao.delete(id);
-//    }
 

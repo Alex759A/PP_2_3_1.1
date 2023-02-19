@@ -1,8 +1,5 @@
 package web.model;
 
-//import jakarta.validation.constraints.Email;
-//import jakarta.validation.constraints.NotEmpty;
-//import jakarta.validation.constraints.Size;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -15,8 +12,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    private int id;
+    private Long id;
 
     @Column(name = "name")
     @NotEmpty(message = "Name should note be empty!")
@@ -36,18 +32,17 @@ public class User {
     public User() {
     }
 
-    public User(int id, String firstName, String lastName, String email) {
-        this.id = id;
+    public User(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
