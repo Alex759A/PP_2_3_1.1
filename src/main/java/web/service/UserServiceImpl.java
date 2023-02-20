@@ -11,7 +11,7 @@ import java.util.List;
 
 
 @Service
-@Transactional //(readOnly=true)
+
 public class UserServiceImpl  implements UserService {
 
     public UserRepository userRepository;
@@ -25,12 +25,12 @@ public class UserServiceImpl  implements UserService {
     public UserServiceImpl() {
     }
 
-    @Transactional(readOnly = true)
+
     public List<User> findAll() {
         return (List<User>) userRepository.findAll();
     }
 
-    @Transactional
+
     @Override
     public User findOne(Long id) {
         User user = userRepository.findById(id).get();
